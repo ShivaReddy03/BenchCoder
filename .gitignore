@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+# Ignore collected static files folder
+/staticfiles/
+
+# Ignore SQLite DB file
+db.sqlite3
+

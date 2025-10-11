@@ -16,10 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path , include
+from django.conf import settings
+from django.conf.urls.static import static
+
+from BenchCoder.views import welcome_view
 
 urlpatterns = [
+    path('', welcome_view, name='welcome'),
     path('admin/', admin.site.urls),
     path('api/auth/', include('users.urls')),
     path('api/problems/', include('problems.urls')),
     path('api/submissions/', include('submissions.urls')),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

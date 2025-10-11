@@ -26,12 +26,12 @@ class Submission(models.Model):
     problem = models.ForeignKey('problems.Problem', on_delete=models.CASCADE)  # Use string reference
     code = models.TextField()
     language = models.CharField(max_length=10, choices=LANGUAGE_CHOICES, default='python')
-    verdict = models.CharField(max_length=5, choices=VERDICT_CHOICES, default='P')
+    verdict = models.CharField(max_length=20, choices=VERDICT_CHOICES, default='P')
     execution_time = models.FloatField(null=True, blank=True)
     memory_used = models.FloatField(null=True, blank=True)
     submitted_at = models.DateTimeField(auto_now_add=True)
     ai_feedback = models.TextField(null=True, blank=True)
-    ai_status = models.CharField(max_length=20, default='Not Requested')
+    ai_status = models.CharField(max_length=30, default='Not Requested')
     
     def __str__(self):
         return f"{self.user.username} - {self.problem.title} - {self.verdict}"

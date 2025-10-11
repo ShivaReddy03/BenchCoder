@@ -32,9 +32,8 @@ def login_user(request):
         refresh = RefreshToken.for_user(user)
         
         return Response({
-            'user': UserProfileSerializer(user).data,
-            'refresh': str(refresh),
             'access': str(refresh.access_token),
+            'refresh': str(refresh),
         }, status=status.HTTP_200_OK)
     
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
