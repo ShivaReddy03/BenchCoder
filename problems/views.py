@@ -1,18 +1,30 @@
-from rest_framework import status, permissions
+from rest_framework import status, permissions, generics
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from .models import Problem, TestCase
 from .serializers import ProblemSerializer, ProblemListSerializer, TestCaseSerializer
+from utils.pagination import CustomPagination
+from django.db.models import Q
 
 class ProblemListView(APIView):
     permission_classes = [permissions.IsAuthenticated]
-    
+
     def get(self, request):
+        search_query = request.query_params.get('search', '')
+        filter_query = request.query_params.get('difficulty', '')
         problems = Problem.objects.all()
-        serializer = ProblemListSerializer(problems, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        if search_query:
+            problems = problems.filter(Q(title__icontains=search_query))
+        if filter_query:
+            problems = problems.filter(difficulty=filter_query)
+
+        paginator = CustomPagination()
+        paginated_problems = paginator.paginate_queryset(problems, request)
+        serializer = ProblemListSerializer(paginated_problems, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 class ProblemDetailView(APIView):
     permission_classes = [permissions.IsAuthenticated]

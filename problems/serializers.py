@@ -18,4 +18,4 @@ class ProblemSerializer(serializers.ModelSerializer):
 class ProblemListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Problem
-        fields = ('id', 'title', 'difficulty', 'points')
+        fields = ('id', 'title', 'difficulty', 'points', 'description')
